@@ -211,6 +211,10 @@ If any step fails, follow this fallback chain:
 | Progress bar missing | `.progress-bar` is auto-created by `runtime.js` only if `.deck` exists | Verify `<div class="deck">` wraps all `.slide` elements |
 | Counter animation not ticking | `.counter` needs `data-to="123"` attribute | Add `<span class="counter" data-to="1248">0</span>` |
 | `render.sh` hangs on Linux | Chrome needs `--no-sandbox` when running as root | Already in the script; if still hanging, add `--disable-dev-shm-usage` |
+| Ken Burns effect not visible | `.kenburns` needs a background-image on the element | Add `style="background-image:url(...)"` or use gradient placeholder |
+| Overview grid (O key) shows empty cards | Each `<section class="slide">` needs `data-title="..."` | Add `data-title="Cover"` etc. to every slide |
+| Hash deep-link `#/3` not working | URL must be `file://path#3` not `file://path#/3` | Use `#3` (no slash) for 1-based slide index |
+| `stagger-list` children not animating one-by-one | Children must be direct descendants, not wrapped in extra divs | Put grid items directly inside the `.anim-stagger-list` container |
 
 ## Anti-Patterns — DO NOT
 
@@ -234,6 +238,8 @@ If any step fails, follow this fallback chain:
 | 16 | Use `<div class="slide">` without `data-title` | Always add `data-title="..."` — used by overview grid (O key) |
 | 17 | Put `<script>` tags inside `.slide` sections | Scripts go AFTER `<div class="deck">` closing tag, before `</body>` |
 | 18 | Override `.slide` display/visibility in custom CSS | `runtime.js` controls `.is-active` — overriding breaks navigation |
+| 19 | Omit `<html lang="zh-CN">` on Chinese decks | Always set `lang` for proper font rendering and accessibility |
+| 20 | Use `<b>` / `<i>` instead of `<strong>` / `<em>` in notes | Semantic HTML; `<strong>` and `<em>` are styled in presenter view |
 
 ## Writing guide
 
