@@ -13,6 +13,32 @@ Author professional HTML presentations as static files. One theme file = one
 look. One layout file = one page type. One animation class = one entry effect.
 All pages share a token-based design system in `assets/base.css`.
 
+```
+User request → Agent reads SKILL.md
+  │
+  ├─ 1. Ask 3 questions (content/theme/template)
+  │     └─ 🔴 CHECKPOINT: all answered
+  │
+  ├─ 2. Scaffold: bash scripts/new-deck.sh <name>
+  │     └─ creates examples/<name>/index.html with paths rewritten
+  │
+  ├─ 3. Build outline: add/remove <section class="slide">
+  │     └─ 🔴 CHECKPOINT: slide count matches request
+  │
+  ├─ 4. Fill layouts: copy from templates/single-page/*.html
+  │     └─ replace demo data with real content
+  │
+  ├─ 5. Add animations: data-anim="fade-up" (max 1-2/slide)
+  │
+  ├─ 6. Add notes: <div class="notes"> per slide
+  │
+  ├─ 7. Review: O (overview) / T (themes) / S (notes)
+  │     └─ 🔴 CHECKPOINT: all clean
+  │
+  └─ 8. Export: bash scripts/render.sh <file> <N>
+        └─ PNG files at 1920×1080
+```
+
 ## Install
 
 ```bash
@@ -165,6 +191,59 @@ bash "$SKILL_DIR/scripts/render.sh" "$SKILL_DIR/examples/my-talk/index.html" 6
 - `.dim` / `.dim2` — muted text
 - `.gradient-text` — rainbow gradient on text
 - `.mt-s` / `.mt-m` / `.mt-l` — margin-top spacing
+
+## End-to-End Example: "做一份 6 页技术分享"
+
+This is a complete walkthrough showing exactly what the agent produces at each step.
+
+**Step 1 — User says:** "做一份 6 页技术分享，用 tokyo-night 主题"
+
+**Step 2 — Scaffold:**
+```bash
+SKILL_DIR="<skill-root>"
+bash "$SKILL_DIR/scripts/new-deck.sh tech-share"
+# Output: ✔ created examples/tech-share/index.html
+```
+
+**Step 3 — Set theme (edit index.html line 8):**
+```html
+<link rel="stylesheet" id="theme-link" href="../../assets/themes/tokyo-night.css">
+```
+
+**Step 4 — Build 6 slides** (replace the 6 default `<section class="slide">` blocks):
+```html
+<!-- Slide 1: Cover -->
+<section class="slide center tc" data-title="Cover">
+  <p class="kicker">TECH SHARING · 2026</p>
+  <h1 class="h1 anim-rise-in" data-anim="rise-in">系统架构升级<br><span class="dim">从单体到微服务</span></h1>
+  <p class="lede">张三 · 2026-06-21</p>
+  <div class="notes">
+    <p>大家好！今天分享我们团队<strong>过去三个月</strong>做的架构升级。</p>
+    <p>先说背景——去年底我们遇到了<strong>三个核心问题</strong>：延迟高、成本炸、稳定性差。</p>
+  </div>
+</section>
+
+<!-- Slide 2: Agenda -->
+<section class="slide" data-title="Agenda">
+  <p class="kicker">Agenda</p>
+  <h2 class="h2">今天讲三件事</h2>
+  <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+    <div class="card"><h4>01 · 问题</h4><p class="dim">现状与痛点</p></div>
+    <div class="card"><h4>02 · 方案</h4><p class="dim">架构设计</p></div>
+    <div class="card"><h4>03 · 结果</h4><p class="dim">数据对比</p></div>
+  </div>
+</section>
+
+<!-- Slides 3-6: follow same pattern — copy layout from templates/single-page/, replace data -->
+```
+
+**Step 5 — Render:**
+```bash
+bash "$SKILL_DIR/scripts/render.sh" "$SKILL_DIR/examples/tech-share/index.html" 6
+# Output: 6 PNG files at 1920×1080
+```
+
+**Result:** 6 professional slides in `tokyo-night` theme with keyboard nav, presenter mode, and PNG export.
 
 ## Authoring rules (important)
 
