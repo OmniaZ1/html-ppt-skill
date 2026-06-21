@@ -116,6 +116,9 @@ Follow these steps in order. Each step has a clear input → action → output.
 | 5. Add animations | Visual rhythm | `data-anim="fade-up"` on hero elements, max 1-2 per slide | Entry effects |
 | 6. Add notes | Speaker needs | `<div class="notes">…</div>` per slide | S-key presenter notes |
 | 7. Review | Completed deck | Open in browser, press O/T/S to verify | No layout clipping |
+
+🔴 **CHECKPOINT: Review checklist — press O (overview grid), T (cycle 3 themes), S (verify notes). All clean → export.**
+
 | 8. Export | Reviewed deck | `bash scripts/render.sh <file> <N>` | PNG files |
 
 ## Quick start
@@ -203,6 +206,11 @@ If any step fails, follow this fallback chain:
 | Slide layout broken in a theme | Some themes override border-radius/shadow aggressively | Test with `minimal-white` first; if broken there, fix the layout HTML |
 | Chart.js colors wrong | Charts read CSS vars in JS; must run after DOM ready | Wrap in `addEventListener('DOMContentLoaded', ...)` |
 | presenter-mode S key not working | `runtime.js` must be linked | Check `<script src="../assets/runtime.js"></script>` is present |
+| 小红书 3:4 图文尺寸不对 | `xhs-post` template uses fixed `810×1080` viewport | Check `.slide` CSS has `width:810px;height:1080px` — don't override |
+| Presenter window shows wrong slide | BroadcastChannel only works same-origin (same file:// or http://) | Open via `http://localhost` instead of `file://` for cross-window sync |
+| Progress bar missing | `.progress-bar` is auto-created by `runtime.js` only if `.deck` exists | Verify `<div class="deck">` wraps all `.slide` elements |
+| Counter animation not ticking | `.counter` needs `data-to="123"` attribute | Add `<span class="counter" data-to="1248">0</span>` |
+| `render.sh` hangs on Linux | Chrome needs `--no-sandbox` when running as root | Already in the script; if still hanging, add `--disable-dev-shm-usage` |
 
 ## Anti-Patterns — DO NOT
 
@@ -223,6 +231,9 @@ If any step fails, follow this fallback chain:
 | 13 | Forget `<!DOCTYPE html>` or `<meta charset>` | Always start from `templates/deck.html` — it has all required boilerplate |
 | 14 | Use `../assets/` paths in nested `full-decks/` templates | Full-deck templates need `../../../assets/` (3 levels up from `full-decks/<name>/`) |
 | 15 | Assume CDN fonts load in offline/China environments | Pre-import only essential fonts in `fonts.css`; add `font-display: swap` |
+| 16 | Use `<div class="slide">` without `data-title` | Always add `data-title="..."` — used by overview grid (O key) |
+| 17 | Put `<script>` tags inside `.slide` sections | Scripts go AFTER `<div class="deck">` closing tag, before `</body>` |
+| 18 | Override `.slide` display/visibility in custom CSS | `runtime.js` controls `.is-active` — overriding breaks navigation |
 
 ## Writing guide
 
