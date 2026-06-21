@@ -70,8 +70,8 @@ Keyboard in audience window: `S` open presenter · `T` cycle theme · `← →` 
 
 ## Before you author anything — ALWAYS ask or recommend
 
-**Do not start writing slides until you understand three things.** Either ask
-the user directly, or — if they already handed you rich content — propose a
+🔴 **CHECKPOINT: Do not start writing slides until you understand three things.**
+Either ask the user directly, or — if they already handed you rich content — propose a
 tasteful default and confirm.
 
 1. **Content & audience.** What's the deck about, how many slides, who's
@@ -86,7 +86,7 @@ tasteful default and confirm.
    - Academic / report → `academic-paper`, `editorial-serif`, `minimal-white`
    - Edgy / cyber / launch → `cyberpunk-neon`, `vaporwave`, `y2k-chrome`,
      `neo-brutalism`
-3. **Starting point.** One of the 14 full-deck templates, or scratch? Point
+3. **Starting point.** One of the 15 full-deck templates, or scratch? Point
    to the closest `templates/full-decks/<name>/` and ask if it fits. If the
    user's content suggests something obvious (e.g. "我要做产品发布会" →
    `product-launch`), propose it confidently instead of asking blindly.
@@ -98,7 +98,22 @@ A good opening message looks like:
 > 2. 风格偏好？我建议从这 3 个主题里选一个：`tokyo-night`（技术分享默认好看）、`xiaohongshu-white`（小红书风）、`corporate-clean`（正式汇报）。
 > 3. 要不要用我现成的 `tech-sharing` 全 deck 模板打底？
 
-Only after those are clear, scaffold the deck and start writing.
+🔴 **CHECKPOINT: All 3 items answered → proceed. If user says "你自己定" → pick defaults and confirm once.**
+
+## Authoring Workflow (step-by-step)
+
+Follow these steps in order. Each step has a clear input → action → output.
+
+| Step | Input | Action | Output |
+|------|-------|--------|--------|
+| 1. Scaffold | Deck name | `bash scripts/new-deck.sh <name>` | `examples/<name>/index.html` |
+| 2. Set theme | User's tone/audience | Change `<link id="theme-link" href="...">` | Correct theme CSS loaded |
+| 3. Build outline | Content + page count | Add/remove `<section class="slide">` blocks | Right number of slides |
+| 4. Fill layouts | Outline structure | Copy from `templates/single-page/*.html`, replace demo data | Real content in each slide |
+| 5. Add animations | Visual rhythm | `data-anim="fade-up"` on hero elements, max 1-2 per slide | Entry effects |
+| 6. Add notes | Speaker needs | `<div class="notes">…</div>` per slide | S-key presenter notes |
+| 7. Review | Completed deck | Open in browser, press O/T/S to verify | No layout clipping |
+| 8. Export | Reviewed deck | `bash scripts/render.sh <file> <N>` | PNG files |
 
 ## Quick start
 
@@ -154,6 +169,40 @@ Only after those are clear, scaffold the deck and start writing.
   `<p>` / `<span>` elements on the slide. The `.notes` class is `display:none`
   by default — it only appears in the S overlay. Slides should contain ONLY
   audience-facing content (titles, bullet points, data, charts, images).
+
+## Failure Modes & Troubleshooting
+
+If any step fails, follow this fallback chain:
+
+| Trigger | First-line fix | Still failing |
+|---------|---------------|---------------|
+| `render.sh` returns ERR_FILE_NOT_FOUND | Check Chrome path: `which google-chrome` (Linux) / verify `LOCALAPPDATA` (Windows) | Set `CHROME=/path/to/chrome.exe` env var and retry |
+| `render.sh` produces blank/white PNG | Increase `--virtual-time-budget=4000` to `8000` in render.sh | Open HTML in browser manually, screenshot with `browser_screenshot` |
+| Theme not switching with T key | Verify `data-themes="a,b,c"` on `<body>` and `data-theme-base` pointing to themes dir | Hard-code `<link id="theme-link" href="...">` instead of T-cycle |
+| Fonts look wrong / fallback to system | Check `fonts.css` is linked BEFORE the theme CSS | CDN blocked (China firewall) — add local font fallback or use proxy |
+| Canvas FX not playing | Verify `<script src="...fx-runtime.js"></script>` is AFTER the `<div class="deck">` | Check browser console for JS errors; FX modules load async |
+| `new-deck.sh` path rewrite wrong | Verify output HTML has `../../assets/` (not `../assets/`) | Manually edit paths: add one more `../` for each nesting level |
+| `open` command not found | macOS: `open`, Windows: `start`, Linux: `xdg-open` | Just drag the HTML file into Chrome |
+| Slide layout broken in a theme | Some themes override border-radius/shadow aggressively | Test with `minimal-white` first; if broken there, fix the layout HTML |
+| Chart.js colors wrong | Charts read CSS vars in JS; must run after DOM ready | Wrap in `addEventListener('DOMContentLoaded', ...)` |
+| presenter-mode S key not working | `runtime.js` must be linked | Check `<script src="../assets/runtime.js"></script>` is present |
+
+## Anti-Patterns — DO NOT
+
+| # | ❌ Don't | ✅ Do instead |
+|---|---------|---------------|
+| 1 | Author slides from a blank HTML file | Copy the closest layout from `templates/single-page/` first |
+| 2 | Use literal hex colors (`#111`, `rgb(...)`) | Use CSS tokens: `var(--text-1)`, `var(--accent)` |
+| 3 | Put presenter-only text on the visible slide | Wrap in `<div class="notes">` or `<aside class="notes">` |
+| 4 | Skip `runtime.js` | Always include it — keyboard nav, S-key, T-cycle, overview all depend on it |
+| 5 | Invent new layout files for minor variations | Compose existing layouts; only create new if genuinely novel |
+| 6 | Use heavy animation frameworks (GSAP, anime.js) | Use the built-in 27 CSS animations + 20 canvas FX |
+| 7 | Hard-code font families in slides | Use `var(--font-sans)` / `var(--font-display)` from tokens |
+| 8 | Mix 5+ animation types on one slide | Max 1-2 animation types per slide for clean rhythm |
+| 9 | Write 逐字稿 in formal written Chinese | Use conversational Chinese: "所以" not "因此", "这个" not "该" |
+| 10 | Write 逐字稿 longer than 300 words per slide | Keep 150–300 words; >300 = can't scan in time |
+| 11 | Delete slides from showcase/template files | They are reference material; copy, don't delete |
+| 12 | Load fx-runtime.js without any `data-fx` elements | Only include fx-runtime.js when slides actually use canvas FX |
 
 ## Writing guide
 
