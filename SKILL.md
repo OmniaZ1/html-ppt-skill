@@ -105,6 +105,7 @@ Only after those are clear, scaffold the deck and start writing.
 1. **Scaffold a new deck.** From the repo root:
    ```bash
    ./scripts/new-deck.sh my-talk
+   # Open in browser: macOS: open, Windows: start, Linux: xdg-open
    open examples/my-talk/index.html
    ```
 2. **Pick a theme.** Open the deck and press `T` to cycle. Or hard-code it:

@@ -89,6 +89,7 @@ Pick **one** accent animation per slide. Everything else should be calm.
 ## 8. Review in-browser
 
 ```bash
+# Open in browser: macOS: open, Windows: start, Linux: xdg-open
 open examples/my-talk/index.html
 ```
 

@@ -158,7 +158,8 @@ module auto-initialised on slide enter via `fx-runtime.js`.
 # Scaffold a new deck from the base template
 ./scripts/new-deck.sh my-talk
 
-# Browse everything
+# Browse everything (open in browser)
+# macOS: open, Windows: start, Linux: xdg-open
 open templates/theme-showcase.html         # all 36 themes (iframe-isolated)
 open templates/layout-showcase.html        # all 31 layouts
 open templates/animation-showcase.html     # all 47 animations

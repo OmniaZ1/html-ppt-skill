@@ -161,7 +161,8 @@ chart-pie · chart-radar · arch-diagram · process-steps · cta · thanks
 # 从 base 模板新建一个 deck
 ./scripts/new-deck.sh my-talk
 
-# 浏览所有内容
+# 浏览所有内容（在浏览器中打开）
+# macOS: open, Windows: start, Linux: xdg-open
 open templates/theme-showcase.html         # 全部 36 主题（iframe 隔离）
 open templates/layout-showcase.html        # 全部 31 布局
 open templates/animation-showcase.html     # 全部 47 动效
