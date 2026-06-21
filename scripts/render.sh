@@ -73,6 +73,11 @@ fi
 
 render_one() {
   local url="$1" target="$2"
+  local win_target="$target"
+  # On Windows (MSYS/Git Bash), convert paths for native Chrome
+  if command -v cygpath &>/dev/null; then
+    target="$(cygpath -w "$target")"
+  fi
   "$CHROME" \
     --headless=new \
     --disable-gpu \
@@ -82,15 +87,22 @@ render_one() {
     --window-size=1920,1080 \
     --screenshot="$target" \
     "$url" >/dev/null 2>&1
-  echo "  ✔ $target"
+  echo "  ✔ $win_target"
 }
+
+# --- Build file:// URL (convert MSYS path for Windows Chrome) ---
+if command -v cygpath &>/dev/null; then
+  FILE_URL="file:///$(cygpath -m "$ABS")"
+else
+  FILE_URL="file://$ABS"
+fi
 
 if [[ "$COUNT" == "1" ]]; then
   OUT_FILE="${OUT:-$(dirname "$FILE")/${STEM}.png}"
-  render_one "file://$ABS" "$OUT_FILE"
+  render_one "$FILE_URL" "$OUT_FILE"
 else
   for i in $(seq 1 "$COUNT"); do
-    render_one "file://$ABS#/$i" "$OUT/${STEM}_$(printf '%02d' "$i").png"
+    render_one "${FILE_URL}#/$i" "$OUT/${STEM}_$(printf '%02d' "$i").png"
   done
 fi
 
