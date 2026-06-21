@@ -43,10 +43,14 @@ idx:N})` 通知 iframe，iframe 只是切换 `.is-active` class —— **不重�
 ## 一行命令安装
 
 ```bash
+# Hermes Agent
+hermes skills install https://github.com/lewislulu/html-ppt-skill
+
+# Claude Code / Codex
 npx skills add https://github.com/lewislulu/html-ppt-skill
 ```
 
-装好后，任何支持 AgentSkill 的 agent（Claude Code / Codex / Cursor / OpenClaw 等）
+装好后，任何支持 AgentSkill 的 agent（Hermes Agent / Claude Code / Codex / Cursor 等）
 都能用这套能力做 PPT。对 agent 说：
 
 > "做一份 8 页的技术分享 slides，用 cyberpunk 主题"

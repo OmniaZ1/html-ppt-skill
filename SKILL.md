@@ -1,5 +1,9 @@
 ---
 name: html-ppt
+version: 1.0.0
+author: lewis <sudolewis@gmail.com>
+license: MIT
+platforms: [linux, macos, windows]
 description: HTML PPT Studio — author professional static HTML presentations in many styles, layouts, and animations, all driven by templates. Use when the user asks for a presentation, PPT, slides, keynote, deck, slideshow, "幻灯片", "演讲稿", "做一份 PPT", "做一份 slides", a reveal-style HTML deck, a 小红书 图文, or any kind of multi-slide pitch/report/sharing document that should look tasteful and be usable with keyboard navigation. Triggers include keywords like "presentation", "ppt", "slides", "deck", "keynote", "reveal", "slideshow", "幻灯片", "演讲稿", "分享稿", "小红书图文", "talk slides", "pitch deck", "tech sharing", "technical presentation".
 ---
 
@@ -12,6 +16,10 @@ All pages share a token-based design system in `assets/base.css`.
 ## Install
 
 ```bash
+# Hermes Agent
+hermes skills install https://github.com/lewislulu/html-ppt-skill
+
+# Claude Code / Codex
 npx skills add https://github.com/lewislulu/html-ppt-skill
 ```
 
@@ -193,9 +201,8 @@ html-ppt/
 
 ## Rendering to PNG
 
-`scripts/render.sh` wraps headless Chrome at
-`/Applications/Google Chrome.app/Contents/MacOS/Google Chrome`. For multi-slide
-capture, runtime.js exposes `#/N` deep-links, and render.sh iterates 1..N.
+`scripts/render.sh` wraps headless Chrome for PNG export. It auto-detects
+Chrome on macOS, Linux, and Windows (Git Bash / MSYS).
 
 ```bash
 ./scripts/render.sh templates/single-page/kpi-grid.html        # single page

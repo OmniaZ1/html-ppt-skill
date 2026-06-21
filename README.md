@@ -47,6 +47,10 @@ word speaker scripts on every slide.
 ## Install (one command)
 
 ```bash
+# Hermes Agent
+hermes skills install https://github.com/lewislulu/html-ppt-skill
+
+# Claude Code / Codex
 npx skills add https://github.com/lewislulu/html-ppt-skill
 ```
 
