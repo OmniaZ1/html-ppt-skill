@@ -109,6 +109,9 @@ Follow these steps in order. Each step has a clear input → action → output.
 | 1. Scaffold | Deck name | `bash scripts/new-deck.sh <name>` | `examples/<name>/index.html` |
 | 2. Set theme | User's tone/audience | Change `<link id="theme-link" href="...">` | Correct theme CSS loaded |
 | 3. Build outline | Content + page count | Add/remove `<section class="slide">` blocks | Right number of slides |
+
+🔴 **CHECKPOINT: Outline complete → verify slide count matches user request before filling content.**
+
 | 4. Fill layouts | Outline structure | Copy from `templates/single-page/*.html`, replace demo data | Real content in each slide |
 | 5. Add animations | Visual rhythm | `data-anim="fade-up"` on hero elements, max 1-2 per slide | Entry effects |
 | 6. Add notes | Speaker needs | `<div class="notes">…</div>` per slide | S-key presenter notes |
@@ -117,34 +120,48 @@ Follow these steps in order. Each step has a clear input → action → output.
 
 ## Quick start
 
-1. **Scaffold a new deck.** From the repo root:
-   ```bash
-   ./scripts/new-deck.sh my-talk
-   # Open in browser: macOS: open, Windows: start, Linux: xdg-open
-   open examples/my-talk/index.html
-   ```
-2. **Pick a theme.** Open the deck and press `T` to cycle. Or hard-code it:
-   ```html
-   <link rel="stylesheet" id="theme-link" href="../assets/themes/aurora.css">
-   ```
-   Catalog in [references/themes.md](references/themes.md).
-3. **Pick layouts.** Copy `<section class="slide">...</section>` blocks out of
-   files in `templates/single-page/` into your deck. Replace the demo data.
-   Catalog in [references/layouts.md](references/layouts.md).
-4. **Add animations.** Put `data-anim="fade-up"` (or `class="anim-fade-up"`) on
-   any element. On `<ul>`/grids, use `anim-stagger-list` for sequenced reveals.
-   For canvas FX, use `<div data-fx="knowledge-graph">...</div>` and include
-   `<script src="../assets/animations/fx-runtime.js"></script>`.
-   Catalog in [references/animations.md](references/animations.md).
-5. **Use a full-deck template.** Copy `templates/full-decks/<name>/` into
-   `examples/my-talk/` as a starting point. Each folder is self-contained with
-   scoped CSS. Catalog in [references/full-decks.md](references/full-decks.md)
-   and gallery at `templates/full-decks-index.html`.
-6. **Render to PNG.**
-   ```bash
-   ./scripts/render.sh templates/theme-showcase.html       # one shot
-   ./scripts/render.sh examples/my-talk/index.html 12      # 12 slides
-   ```
+**Agent workflow — copy-paste these commands in order:**
+
+```bash
+# Step 1: scaffold (from skill root)
+SKILL_DIR="$(dirname "$(readlink -f "$0")")"  # or hardcode the path
+bash "$SKILL_DIR/scripts/new-deck.sh my-talk"
+
+# Step 2: verify scaffold created correctly
+grep -c '../../assets/' "$SKILL_DIR/examples/my-talk/index.html"
+# Expected: 6 (fonts, base, theme, animations, theme-base, runtime)
+
+# Step 3: render to PNG (single page)
+bash "$SKILL_DIR/scripts/render.sh" "$SKILL_DIR/examples/my-talk/index.html" 1
+
+# Step 4: render all slides
+bash "$SKILL_DIR/scripts/render.sh" "$SKILL_DIR/examples/my-talk/index.html" 6
+```
+
+**When composing a deck, the HTML for each slide looks like this:**
+
+```html
+<section class="slide" data-title="Your Title">
+  <p class="kicker">Section Label</p>
+  <h2 class="h2 anim-fade-up" data-anim="fade-up">Slide Title</h2>
+  <div class="grid g3 mt-l anim-stagger-list" data-anim-target>
+    <div class="card"><h4>Point 1</h4><p class="dim">Details...</p></div>
+    <div class="card"><h4>Point 2</h4><p class="dim">Details...</p></div>
+    <div class="card"><h4>Point 3</h4><p class="dim">Details...</p></div>
+  </div>
+  <div class="notes">Speaker notes here (150-300 words).</div>
+</section>
+```
+
+**Available layout classes:**
+- `.grid.g2` / `.grid.g3` / `.grid.g4` — 2/3/4 column grid
+- `.card` / `.card-soft` / `.card-outline` / `.card-accent` — card styles
+- `.center` / `.tc` — center slide content
+- `.kicker` / `.eyebrow` — small label above title
+- `.lede` — subtitle text below title
+- `.dim` / `.dim2` — muted text
+- `.gradient-text` — rainbow gradient on text
+- `.mt-s` / `.mt-m` / `.mt-l` — margin-top spacing
 
 ## Authoring rules (important)
 
@@ -203,6 +220,9 @@ If any step fails, follow this fallback chain:
 | 10 | Write 逐字稿 longer than 300 words per slide | Keep 150–300 words; >300 = can't scan in time |
 | 11 | Delete slides from showcase/template files | They are reference material; copy, don't delete |
 | 12 | Load fx-runtime.js without any `data-fx` elements | Only include fx-runtime.js when slides actually use canvas FX |
+| 13 | Forget `<!DOCTYPE html>` or `<meta charset>` | Always start from `templates/deck.html` — it has all required boilerplate |
+| 14 | Use `../assets/` paths in nested `full-decks/` templates | Full-deck templates need `../../../assets/` (3 levels up from `full-decks/<name>/`) |
+| 15 | Assume CDN fonts load in offline/China environments | Pre-import only essential fonts in `fonts.css`; add `font-display: swap` |
 
 ## Writing guide
 
