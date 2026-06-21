@@ -419,6 +419,86 @@ A                                       cycle demo animation on current slide
 Esc                                     close all overlays
 ```
 
+## Quality Standards
+
+A deck is **done** when ALL of these are true:
+
+| Check | Pass criteria |
+|-------|--------------|
+| Slide count | Exactly matches user request (±0) |
+| Theme applied | `<link id="theme-link">` points to correct theme CSS |
+| Every slide has `data-title` | Overview grid (O key) shows all slide titles |
+| No placeholder text | No "Lorem ipsum", "TBD", "TODO", "Your content here" |
+| Notes present | Every slide has `<div class="notes">` with 150-300 words |
+| Keyboard works | ← → navigate, T cycles themes, S opens presenter |
+| Tokens only | Zero hardcoded hex colors in slide markup |
+| PNG renders | `render.sh` produces non-blank PNGs (37KB+ for 1920×1080) |
+
+## Common Scenarios → Recommended Combos
+
+| User request | Template | Theme | Animations | Notes |
+|-------------|----------|-------|------------|-------|
+| 技术分享 (8页) | `tech-sharing` | `tokyo-night` | `fade-up` + `stagger-list` | 每页 200 字逐字稿 |
+| 投资人路演 (10页) | `pitch-deck` | `pitch-deck-vc` | `rise-in` cover + `counter-up` KPIs | English notes OK |
+| 小红书图文 (9张) | `xhs-post` | `xiaohongshu-white` | Minimal, `fade-up` only | 3:4 ratio, 810×1080 |
+| 周报 (7页) | `weekly-report` | `corporate-clean` | `stagger-list` + `counter-up` | 数据驱动，少文字 |
+| 产品发布会 (8页) | `product-launch` | `glassmorphism` | `blur-in` cover + `zoom-pop` features | 每页一个重点 |
+| 教学课件 (7页) | `course-module` | `academic-paper` | `fade-up` only | 左侧学习目标栏 |
+| 演讲带逐字稿 (6页) | `presenter-mode-reveal` | `tokyo-night` | `rise-in` titles | 150-300字/页，口语化 |
+| 代码分享 (8页) | `tech-sharing` | `dracula` | `fade-up` + `glitch-in` code | code.html 布局 |
+| 项目架构图 (5页) | scratch | `blueprint` | `path-draw` SVG | arch-diagram.html |
+| 安全审计报告 (6页) | `testing-safety-alert` | `neo-brutalism` | `fade-up` + `counter-up` | 红/琥珀/绿三级卡片 |
+
+## Agent Quick Reference Card
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  html-ppt · Agent Speed Reference                               │
+├─────────────────────────────────────────────────────────────────┤
+│  THEMES (pick by tone):                                         │
+│    Dark: tokyo-night dracula catppuccin-mocha gruvbox-dark      │
+│    Light: minimal-white corporate-clean arctic-cool swiss-grid  │
+│    Fun: aurora glassmorphism cyberpunk-neon vaporwave xhs-white │
+│    Formal: pitch-deck-vc academic-paper editorial-serif         │
+├─────────────────────────────────────────────────────────────────┤
+│  LAYOUTS (pick by content):                                     │
+│    Cover: cover.html                                            │
+│    Text: bullets.html two-column.html three-column.html         │
+│    Data: stat-highlight.html kpi-grid.html table.html           │
+│    Charts: chart-bar.html chart-line.html chart-pie.html        │
+│    Code: code.html terminal.html diff.html                      │
+│    Diagram: flow-diagram.html arch-diagram.html mindmap.html    │
+│    Plan: timeline.html roadmap.html gantt.html                  │
+│    End: cta.html thanks.html                                    │
+├─────────────────────────────────────────────────────────────────┤
+│  ANIMATIONS (max 1-2/slide):                                    │
+│    Safe: fade-up stagger-list rise-in                           │
+│    Bold: blur-in glitch-in perspective-zoom                     │
+│    Data: counter-up path-draw                                   │
+│    Canvas: particle-burst confetti-cannon knowledge-graph       │
+├─────────────────────────────────────────────────────────────────┤
+│  COMMANDS:                                                      │
+│    Scaffold: bash scripts/new-deck.sh <name>                    │
+│    Render 1: bash scripts/render.sh <html> 1                    │
+│    Render N: bash scripts/render.sh <html> <N>                  │
+│    Verify:   grep -c '../../assets/' <html>  # expect 6         │
+├─────────────────────────────────────────────────────────────────┤
+│  SLIDE TEMPLATE:                                                │
+│    <section class="slide" data-title="...">                     │
+│      <p class="kicker">LABEL</p>                                │
+│      <h2 class="h2 anim-fade-up" data-anim="fade-up">Title     │
+│      <div class="grid g3 mt-l">...</div>                        │
+│      <div class="notes">150-300 words</div>                     │
+│    </section>                                                   │
+├─────────────────────────────────────────────────────────────────┤
+│  CSS CLASSES: .grid.g2/g3/g4 .card .center .tc .kicker .lede   │
+│               .dim .dim2 .gradient-text .mt-s .mt-m .mt-l       │
+├─────────────────────────────────────────────────────────────────┤
+│  KEYS: ←→navigate T:theme A:anim F:fullscreen S:presenter      │
+│        O:overview N:notes R:reset-timer Esc:close               │
+└─────────────────────────────────────────────────────────────────┘
+```
+
 ## License & author
 
 MIT. Copyright (c) 2026 lewis &lt;sudolewis@gmail.com&gt;.
