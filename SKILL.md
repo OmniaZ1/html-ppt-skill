@@ -147,6 +147,19 @@ Follow these steps in order. Each step has a clear input → action → output.
 
 | 8. Export | Reviewed deck | `bash scripts/render.sh <file> <N>` | PNG files |
 
+**Decision branches at each step:**
+
+| If user says... | Then... |
+|-----------------|---------|
+| "你自己定" / "随便" | Pick `corporate-clean` theme + `tech-sharing` template, confirm once |
+| "小红书图文" | Use `xhs-post` template (fixed 810×1080), `xiaohongshu-white` theme |
+| "带演讲者模式" / "有逐字稿" | Use `presenter-mode-reveal` template, write 150-300 words per `<aside class="notes">` |
+| "暗色/深色" | Choose from: `tokyo-night`, `dracula`, `catppuccin-mocha`, `gruvbox-dark`, `cyberpunk-neon` |
+| "简洁/极简" | Choose from: `minimal-white`, `arctic-cool`, `swiss-grid`, `editorial-serif` |
+| "炫酷/科技感" | Choose from: `cyberpunk-neon`, `vaporwave`, `y2k-chrome`, `aurora`, `glassmorphism` |
+| "要导出图片/PNG" | After building, run `render.sh` with slide count |
+| "不需要动画" | Skip Step 5, remove all `data-anim` attributes |
+
 ## Quick start
 
 **Agent workflow — copy-paste these commands in order:**
@@ -294,6 +307,10 @@ If any step fails, follow this fallback chain:
 | Overview grid (O key) shows empty cards | Each `<section class="slide">` needs `data-title="..."` | Add `data-title="Cover"` etc. to every slide |
 | Hash deep-link `#/3` not working | URL must be `file://path#3` not `file://path#/3` | Use `#3` (no slash) for 1-based slide index |
 | `stagger-list` children not animating one-by-one | Children must be direct descendants, not wrapped in extra divs | Put grid items directly inside the `.anim-stagger-list` container |
+| Deck works locally but breaks on web server | Relative paths (`../../assets/`) break if directory structure changes | Use `<base href="...">` or absolute paths when deploying |
+| Two decks on same page conflict | CSS class names like `.slide`, `.card` are global | Scope with `.deck` parent or use iframe isolation (like showcases do) |
+| SVG `path-draw` not rendering | Older browsers may not support CSS `stroke-dasharray` animation | Add fallback: static SVG with `stroke-dasharray: 0` |
+| Print layout broken | `base.css` has `@media print` rules but custom CSS may override | Test with Ctrl+P before delivering PDF version |
 
 ## Anti-Patterns — DO NOT
 
@@ -319,6 +336,11 @@ If any step fails, follow this fallback chain:
 | 18 | Override `.slide` display/visibility in custom CSS | `runtime.js` controls `.is-active` — overriding breaks navigation |
 | 19 | Omit `<html lang="zh-CN">` on Chinese decks | Always set `lang` for proper font rendering and accessibility |
 | 20 | Use `<b>` / `<i>` instead of `<strong>` / `<em>` in notes | Semantic HTML; `<strong>` and `<em>` are styled in presenter view |
+| 21 | Hard-code slide dimensions in pixels | Use CSS variables (`--slide-w`, `--slide-h`) from `base.css` for consistency |
+| 22 | Use `position: absolute` for slide layout | Use CSS Grid (`.grid.g2/g3/g4`) — it's responsive and token-driven |
+| 23 | Include Chart.js CDN on slides without charts | Only add `<script src="chart.js">` when slides actually use `chart-bar/line/pie/radar.html` |
+| 24 | Write notes in English for a Chinese deck | Match notes language to deck language; bilingual decks use Chinese notes |
+| 25 | Copy entire showcase HTML as a starting point | Use `new-deck.sh` scaffold or copy a `full-decks/` template — showcases are reference, not starters |
 
 ## Writing guide
 
@@ -329,12 +351,18 @@ Chinese + English deck, and how to export.
 
 ## Catalogs (load when needed)
 
-- [references/themes.md](references/themes.md) — all 36 themes with when-to-use.
-- [references/layouts.md](references/layouts.md) — all 31 layout types.
-- [references/animations.md](references/animations.md) — 27 CSS + 20 canvas FX animations.
-- [references/full-decks.md](references/full-decks.md) — all 15 full-deck templates.
-- [references/presenter-mode.md](references/presenter-mode.md) — **演讲者模式 + 逐字稿编写指南（技术分享/演讲必看）**.
-- [references/authoring-guide.md](references/authoring-guide.md) — full workflow.
+**When to load which reference:**
+
+| User asks about... | Load this | Key content |
+|--------------------|-----------|-------------|
+| "什么主题好看" / theme choice | [references/themes.md](references/themes.md) | 36 themes with when-to-use + audience mapping |
+| "用什么布局" / layout type | [references/layouts.md](references/layouts.md) | 31 layouts: opener/text/data/code/diagram/plan/visual/closer |
+| "加什么动画" / animation | [references/animations.md](references/animations.md) | 27 CSS + 20 canvas FX with trigger syntax |
+| "有现成模板吗" / full deck | [references/full-decks.md](references/full-decks.md) | 15 templates: 8 extracted + 7 scenario |
+| "演讲者模式怎么用" / presenter | [references/presenter-mode.md](references/presenter-mode.md) | S-key guide + 逐字稿三铁律 + HTML structure |
+| "怎么从零开始做" / workflow | [references/authoring-guide.md](references/authoring-guide.md) | 10-step walkthrough from request to PNG |
+
+All 6 references are searchable via `skill_view(name, file_path='references/<name>.md')`.
 
 ## File structure
 
