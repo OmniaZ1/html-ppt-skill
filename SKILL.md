@@ -364,35 +364,6 @@ Chinese + English deck, and how to export.
 
 All 6 references are searchable via `skill_view(name, file_path='references/<name>.md')`.
 
-## File structure
-
-```
-html-ppt/
-├── SKILL.md                 (this file)
-├── references/              (detailed catalogs, load as needed)
-├── assets/
-│   ├── base.css             (tokens + primitives — do not edit per deck)
-│   ├── fonts.css            (webfont imports)
-│   ├── runtime.js           (keyboard + presenter + overview + theme cycle)
-│   ├── themes/*.css         (36 token overrides, one per theme)
-│   └── animations/
-│       ├── animations.css   (27 named CSS entry animations)
-│       ├── fx-runtime.js    (auto-init [data-fx] on slide enter)
-│       └── fx/*.js          (20 canvas FX modules: particles/graph/fireworks…)
-├── templates/
-│   ├── deck.html                  (minimal 6-slide starter)
-│   ├── theme-showcase.html        (36 slides, iframe-isolated per theme)
-│   ├── layout-showcase.html       (iframe tour of all 31 layouts)
-│   ├── animation-showcase.html    (20 FX + 27 CSS animation slides)
-│   ├── full-decks-index.html      (gallery of all 14 full-deck templates)
-│   ├── full-decks/<name>/         (14 scoped multi-slide deck templates)
-│   └── single-page/*.html         (31 layout files with demo data)
-├── scripts/
-│   ├── new-deck.sh                (scaffold a deck from deck.html)
-│   └── render.sh                  (headless Chrome → PNG)
-└── examples/demo-deck/            (complete working deck)
-```
-
 ## Rendering to PNG
 
 `scripts/render.sh` wraps headless Chrome for PNG export. It auto-detects
@@ -401,22 +372,6 @@ Chrome on macOS, Linux, and Windows (Git Bash / MSYS).
 ```bash
 ./scripts/render.sh templates/single-page/kpi-grid.html        # single page
 ./scripts/render.sh examples/demo-deck/index.html 8 out-dir    # 8 slides, custom dir
-```
-
-## Keyboard cheat sheet
-
-```
-←  →  Space  PgUp  PgDn  Home  End    navigate
-F                                       fullscreen
-S                                       open presenter window (magnetic cards: current/next/script/timer)
-N                                       quick notes drawer (bottom overlay)
-R                                       reset timer (in presenter window)
-?preview=N                              URL param — force preview-only mode (single slide, no chrome)
-O                                       slide overview grid
-T                                       cycle themes (reads data-themes attr)
-A                                       cycle demo animation on current slide
-#/N in URL                              deep-link to slide N
-Esc                                     close all overlays
 ```
 
 ## Quality Standards
