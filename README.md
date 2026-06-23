@@ -28,6 +28,12 @@ hermes skills install https://github.com/lewislulu/html-ppt-skill
 npx skills install https://github.com/lewislulu/html-ppt-skill
 ```
 
+**装完直接试：**
+
+> "做一份 6 页技术分享 slides，用 tokyo-night 主题"
+
+Agent 会自动读取 SKILL.md，组装模板，生成完整 HTML + PNG。
+
 ## 它会交付什么？
 
 | 产物 | 说明 |
