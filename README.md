@@ -1,239 +1,105 @@
-# html-ppt — HTML PPT Studio
+# html-ppt — 让你的 Agent 做出专业级 PPT
 
-> A world-class AgentSkill for producing professional HTML presentations in
-> **36 themes**, **15 full-deck templates**, **31 page layouts**,
-> **47 animations** (27 CSS + 20 canvas FX), and a **true presenter mode**
-> with pixel-perfect previews + speaker script + timer — all pure static
-> HTML/CSS/JS, no build step.
+> 一行命令安装，agent 立刻拥有 36 主题 × 15 模板 × 31 布局 × 47 动效的完整设计系统。
+> 纯静态 HTML/CSS/JS，零构建，零依赖。内置演讲者模式 + 逐字稿提词器。
 
-**Author:** lewis &lt;sudolewis@gmail.com&gt;
-**License:** MIT
-**中文文档:** [README.zh-CN.md](README.zh-CN.md)
+**Hermes Agent** · **Claude Code** · **Codex** · MIT License
 
-![html-ppt — cover with live previews](docs/readme/hero.gif)
+![tech-sharing cover](showcase/tech-sharing-cover.png)
 
-> One command installs **36 themes × 20 canvas FX × 31 layouts × 15 full decks + presenter mode**. Every preview above is a live iframe of a real template file rendering inside the deck — no screenshots, no mock-ups.
+## 你什么时候需要它？
 
-## 🎤 Presenter Mode (new!)
+| 你说 | agent 做什么 |
+|------|-------------|
+| "做一份 8 页技术分享 slides" | 从 `tech-sharing` 模板组装，`tokyo-night` 主题 |
+| "做一个小红书图文，9 张" | `xhs-post` 模板，3:4 比例，`xiaohongshu-white` 主题 |
+| "我要做产品发布会 PPT" | `product-launch` 模板，`glassmorphism` 主题 |
+| "做一份带逐字稿的演讲" | `presenter-mode-reveal` 模板，每页 150-300 字口语化逐字稿 |
+| "把这段 outline 变成投资人 pitch deck" | `pitch-deck` 模板，`pitch-deck-vc` 主题 |
+| "做一份周报" | `weekly-report` 模板，KPI 网格 + 图表 |
 
-Press `S` on any deck to pop open a dedicated presenter window with four
-draggable, resizable **magnetic cards**: current slide, next slide preview,
-speaker script (逐字稿), and timer. Two windows stay in sync via
-`BroadcastChannel`.
-
-![Presenter mode with 4 magnetic cards](docs/readme/presenter-mode.png)
-
-**Why previews are pixel-perfect:** each card is an `<iframe>` that loads the
-same deck HTML with a `?preview=N` query param. The runtime detects this and
-renders only slide N with no chrome — so the preview uses the **same CSS,
-theme, fonts and viewport** as the audience view. Colors and layout are
-guaranteed identical.
-
-**Smooth (no-reload) navigation:** on slide change, the presenter window
-sends `postMessage({type:'preview-goto', idx:N})` to each iframe. The iframe
-just toggles `.is-active` between slides — **no reload, no flicker**.
-
-**Speaker script rules (3 golden):**
-1. **Prompt signals, not lines to read** — bold the keywords, separate
-   transition sentences into their own paragraphs
-2. **150–300 words per slide** — that's the ~2–3 min/page pace
-3. **Write it like you speak** — conversational, not written prose
-
-See [`references/presenter-mode.md`](references/presenter-mode.md) for the
-full authoring guide, or copy the ready-made template at
-`templates/full-decks/presenter-mode-reveal/` which ships with full 150-300
-word speaker scripts on every slide.
-
-## Install (one command)
+## 安装
 
 ```bash
 # Hermes Agent
 hermes skills install https://github.com/lewislulu/html-ppt-skill
 
 # Claude Code / Codex
-npx skills add https://github.com/lewislulu/html-ppt-skill
+npx skills install https://github.com/lewislulu/html-ppt-skill
 ```
 
-That registers the skill with your agent runtime. After install, any agent
-that supports AgentSkills can author presentations by asking things like:
+## 它会交付什么？
 
-> "做一份 8 页的技术分享 slides，用 cyberpunk 主题"
-> "turn this outline into a pitch deck"
-> "做一个小红书图文，9 张，白底柔和风"
+| 产物 | 说明 |
+|------|------|
+| `index.html` | 完整多页 HTML 演示文稿，支持键盘导航 |
+| PNG 截图 | `render.sh` 导出 1920×1080 PNG |
+| 演讲者视图 | 按 `S` 弹出，4 个可拖拽磁吸卡片（当前页/下一页/逐字稿/计时器） |
+| 主题切换 | 按 `T` 循环 36 个主题，实时预览 |
 
-## What's in the box
+![KPI Grid layout](showcase/kpi-grid.png)
 
-| | Count | Where |
-|---|---|---|
-| 🎤 **Presenter mode** | **NEW** | `S` key / `?preview=N` |
-| 🎨 **Themes** | **36** | `assets/themes/*.css` |
-| 📑 **Full-deck templates** | **15** | `templates/full-decks/<name>/` |
-| 🧩 **Single-page layouts** | **31** | `templates/single-page/*.html` |
-| ✨ **CSS animations** | **27** | `assets/animations/animations.css` |
-| 💥 **Canvas FX animations** | **20** | `assets/animations/fx/*.js` |
-| 🖼️ **Showcase decks** | 4 | `templates/*-showcase.html` |
-| 📸 **Verification screenshots** | 56 | `scripts/verify-output/` |
+## 核心资产
 
-### 36 Themes
+| | 数量 | 说明 |
+|---|------|------|
+| 🎨 主题 | **36** | 极简白 / 赛博霓虹 / 小红书暖白 / 学术论文 / 投资路演... |
+| 📑 完整模板 | **15** | 8 个真实提炼 + 7 个场景脚手架 |
+| 🧩 单页布局 | **31** | 封面 / 目录 / KPI / 图表 / 代码 / 流程图 / 时间线 / 甘特图... |
+| ✨ CSS 动画 | **27** | 淡入 / 打字机 / 霓虹光晕 / 3D 翻转... |
+| 💥 Canvas FX | **20** | 粒子爆发 / 烟花 / 代码雨 / 力导向知识图谱 / 神经网络... |
+| 🎤 演讲者模式 | **1** | S 键弹出，BroadcastChannel 双向同步 |
 
-`minimal-white`, `editorial-serif`, `soft-pastel`, `sharp-mono`, `arctic-cool`,
-`sunset-warm`, `catppuccin-latte`, `catppuccin-mocha`, `dracula`, `tokyo-night`,
-`nord`, `solarized-light`, `gruvbox-dark`, `rose-pine`, `neo-brutalism`,
-`glassmorphism`, `bauhaus`, `swiss-grid`, `terminal-green`, `xiaohongshu-white`,
-`rainbow-gradient`, `aurora`, `blueprint`, `memphis-pop`, `cyberpunk-neon`,
-`y2k-chrome`, `retro-tv`, `japanese-minimal`, `vaporwave`, `midcentury`,
-`corporate-clean`, `academic-paper`, `news-broadcast`, `pitch-deck-vc`,
-`magazine-bold`, `engineering-whiteprint`.
+## 触发词
 
-![36 themes · 8 of them](docs/readme/themes.png)
+Agent 识别以下关键词时自动加载本 skill：
 
-Each is a pure CSS-tokens file — swap one `<link>` to reskin the entire deck.
-Browse them all in `templates/theme-showcase.html` (each slide rendered in an
-isolated iframe so theme ≠ theme is visually guaranteed).
+`presentation` · `ppt` · `slides` · `deck` · `幻灯片` · `演讲稿` · `做一份 PPT` · `做一份 slides` · `小红书图文` · `pitch deck` · `tech sharing` · `speaker notes` · `逐字稿` · `演讲者视图`
 
-![14 full-deck templates](docs/readme/templates.png)
+## 与同类的区别
 
-### 15 Full-deck templates
+| | html-ppt-skill | reveal.js | slidev | Marp |
+|---|---|---|---|---|
+| Agent-native | ✅ SKILL.md 直接驱动 | ❌ 需 build | ❌ 需 build | ❌ 需 build |
+| 零依赖 | ✅ 纯静态 | ❌ npm | ❌ npm | ❌ npm |
+| 主题数量 | 36 | ~10 | ~5 | ~3 |
+| 模板数量 | 15 | 0 | 0 | 0 |
+| 演讲者模式 | ✅ S 键磁吸卡片 | ✅ | ✅ | ❌ |
+| 逐字稿 | ✅ 每页 150-300 字 | ❌ | ❌ | ❌ |
+| PNG 导出 | ✅ render.sh | ❌ 需额外 | ❌ 需额外 | ✅ |
 
-Eight extracted from real-world decks, seven generic scenario scaffolds:
+## 安全边界
 
-**Extracted looks**
-- `xhs-white-editorial` — 小红书白底杂志风
-- `graphify-dark-graph` — 暗底 + 力导向知识图谱
-- `knowledge-arch-blueprint` — 蓝图 / 架构图风
-- `hermes-cyber-terminal` — 终端 cyberpunk
-- `obsidian-claude-gradient` — 紫色渐变卡
-- `testing-safety-alert` — 红 / 琥珀警示风
-- `xhs-pastel-card` — 柔和马卡龙图文
-- `dir-key-nav-minimal` — 方向键极简
+- 纯静态文件，不执行任何外部 API 调用
+- 不修改系统配置，不安装全局依赖
+- 所有资源本地化（CDN 仅用于可选的 Google Fonts）
+- `render.sh` 仅调用本地 Chrome，不上传任何数据
 
-**Scenario decks**
-- `pitch-deck`, `product-launch`, `tech-sharing`, `weekly-report`,
-  `xhs-post` (9-slide 3:4), `course-module`,
-  **`presenter-mode-reveal`** 🎤 — complete talk template with full 150-300
-  word speaker scripts on every slide, designed around the `S` key presenter mode
-
-Each is a self-contained folder with scoped `.tpl-<name>` CSS so multiple
-decks can be previewed side-by-side without collisions. Browse the full
-gallery in `templates/full-decks-index.html`.
-
-![31 single-page layouts](docs/readme/layouts.png)
-
-### 31 Single-page layouts
-
-cover · toc · section-divider · bullets · two-column · three-column ·
-big-quote · stat-highlight · kpi-grid · table · code · diff · terminal ·
-flow-diagram · timeline · roadmap · mindmap · comparison · pros-cons ·
-todo-checklist · gantt · image-hero · image-grid · chart-bar · chart-line ·
-chart-pie · chart-radar · arch-diagram · process-steps · cta · thanks
-
-Every layout ships with realistic demo data so you can drop it into a deck
-and immediately see it render.
-
-![31 layouts auto-cycling through real template files](docs/readme/layouts-live.gif)
-
-*The big iframe is loading `templates/single-page/<name>.html` directly and cycling through all 31 layouts every 2.8 seconds.*
-
-![47 animations — 27 CSS + 20 canvas FX](docs/readme/animations.png)
-
-### 27 CSS animations + 20 Canvas FX
-
-**CSS (lightweight)** — directional fades, `rise-in`, `zoom-pop`, `blur-in`,
-`glitch-in`, `typewriter`, `neon-glow`, `shimmer-sweep`, `gradient-flow`,
-`stagger-list`, `counter-up`, `path-draw`, `morph-shape`, `parallax-tilt`,
-`card-flip-3d`, `cube-rotate-3d`, `page-turn-3d`, `perspective-zoom`,
-`marquee-scroll`, `kenburns`, `ripple-reveal`, `spotlight`, …
-
-**Canvas FX (cinematic)** — `particle-burst`, `confetti-cannon`, `firework`,
-`starfield`, `matrix-rain`, `knowledge-graph` (force-directed physics),
-`neural-net` (signal pulses), `constellation`, `orbit-ring`, `galaxy-swirl`,
-`word-cascade`, `letter-explode`, `chain-react`, `magnetic-field`,
-`data-stream`, `gradient-blob`, `sparkle-trail`, `shockwave`,
-`typewriter-multi`, `counter-explosion`. Each is a real hand-rolled canvas
-module auto-initialised on slide enter via `fx-runtime.js`.
-
-## Quick start (manual, after install or git clone)
-
-```bash
-# Scaffold a new deck from the base template
-./scripts/new-deck.sh my-talk
-
-# Browse everything (open in browser)
-# macOS: open, Windows: start, Linux: xdg-open
-open templates/theme-showcase.html         # all 36 themes (iframe-isolated)
-open templates/layout-showcase.html        # all 31 layouts
-open templates/animation-showcase.html     # all 47 animations
-open templates/full-decks-index.html       # all 14 full decks
-
-# Render any template to PNG via headless Chrome
-./scripts/render.sh templates/theme-showcase.html
-./scripts/render.sh examples/my-talk/index.html 12
-```
-
-## Keyboard cheat sheet
-
-```
-← → Space PgUp PgDn Home End   navigate
-F                               fullscreen
-S                               open presenter window (magnetic cards)
-N                               quick notes drawer (bottom)
-R                               reset timer (in presenter window)
-O                               slide overview grid
-T                               cycle themes (syncs to presenter)
-A                               cycle a demo animation on current slide
-#/N (URL)                       deep-link to slide N
-?preview=N (URL)                preview-only mode (single slide, no chrome)
-```
-
-## Project structure
+## 文件结构
 
 ```
 html-ppt-skill/
-├── SKILL.md                      agent-facing dispatcher
-├── README.md                     this file
-├── references/                   detailed catalogs
-│   ├── themes.md                 36 themes with when-to-use
-│   ├── layouts.md                31 layout types
-│   ├── animations.md             27 CSS + 20 FX catalog
-│   ├── full-decks.md             14 full-deck templates
-│   └── authoring-guide.md        full workflow
+├── SKILL.md              agent 入口（459 行，7 CHECKPOINT，23 失败模式）
+├── README.md             本文件
+├── README.zh-CN.md       中文说明
+├── LICENSE               MIT
+├── test-prompts.json     5 个标准化测试 prompt
+├── references/           6 个参考文档
 ├── assets/
-│   ├── base.css                  shared tokens + primitives
-│   ├── fonts.css                 webfont imports
-│   ├── runtime.js                keyboard + presenter + overview
-│   ├── themes/*.css              36 theme token files
-│   └── animations/
-│       ├── animations.css        27 named CSS animations
-│       ├── fx-runtime.js         auto-init [data-fx] on slide enter
-│       └── fx/*.js               20 canvas FX modules
+│   ├── base.css          设计系统 tokens
+│   ├── runtime.js        键盘导航 + 演讲者模式
+│   ├── themes/*.css      36 个主题
+│   └── animations/       27 CSS + 20 Canvas FX
 ├── templates/
-│   ├── deck.html                 minimal starter
-│   ├── theme-showcase.html       iframe-isolated theme tour
-│   ├── layout-showcase.html      all 31 layouts
-│   ├── animation-showcase.html   47 animation slides
-│   ├── full-decks-index.html     14-deck gallery
-│   ├── full-decks/<name>/        14 scoped multi-slide decks
-│   └── single-page/*.html        31 layout files with demo data
+│   ├── full-decks/       15 个完整 deck 模板
+│   └── single-page/      31 个单页布局
 ├── scripts/
-│   ├── new-deck.sh               scaffold
-│   ├── render.sh                 headless Chrome → PNG
-│   └── verify-output/            56 self-test screenshots
-└── examples/demo-deck/           complete working deck
+│   ├── new-deck.sh       脚手架
+│   └── render.sh         PNG 导出（跨平台）
+├── showcase/             展示截图
+└── examples/demo-deck/   完整示例 deck
 ```
-
-## Philosophy
-
-- **Token-driven design system.** All color, radius, shadow, font decisions
-  live in `assets/base.css` + the current theme file. Change one variable,
-  the whole deck reflows tastefully.
-- **Iframe isolation for previews.** Theme / layout / full-deck showcases all
-  use `<iframe>` per slide so each preview is a real, independent render.
-- **Zero build.** Pure static HTML/CSS/JS. CDN only for webfonts, highlight.js
-  and chart.js (optional).
-- **Senior-designer defaults.** Opinionated type scale, spacing rhythm,
-  gradients and card treatments — no "Corporate PowerPoint 2006" vibes.
-- **Chinese + English first-class.** Noto Sans SC / Noto Serif SC pre-imported.
 
 ## License
 
-MIT © 2026 lewis &lt;sudolewis@gmail.com&gt;.
+MIT © 2026 lewis &lt;sudolewis@gmail.com&gt;

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "basic-tech-share",
+    "prompt": "做一份 6 页技术分享 slides，用 tokyo-night 主题",
+    "expect": {
+      "slide_count": 6,
+      "theme": "tokyo-night",
+      "has_notes": true,
+      "has_keyboard_nav": true,
+      "renders_png": true
+    }
+  },
+  {
+    "id": "xhs-post",
+    "prompt": "做一个小红书图文，9 张，白底柔和风",
+    "expect": {
+      "slide_count": 9,
+      "theme": "xiaohongshu-white",
+      "aspect_ratio": "3:4 (810x1080)",
+      "has_notes": false
+    }
+  },
+  {
+    "id": "pitch-deck",
+    "prompt": "把这段产品介绍变成投资人 pitch deck，10 页",
+    "expect": {
+      "slide_count": 10,
+      "theme_suggestion": ["pitch-deck-vc", "corporate-clean"],
+      "has_notes": true,
+      "has_kpi_or_chart": true
+    }
+  },
+  {
+    "id": "presenter-mode",
+    "prompt": "我要做一场 30 分钟的技术分享，需要逐字稿",
+    "expect": {
+      "template": "presenter-mode-reveal",
+      "notes_per_slide": "150-300 words",
+      "notes_language": "conversational Chinese"
+    }
+  },
+  {
+    "id": "weekly-report",
+    "prompt": "做一份周报，7 页，用 corporate-clean 主题",
+    "expect": {
+      "slide_count": 7,
+      "theme": "corporate-clean",
+      "has_kpi_grid": true,
+      "has_chart": true
+    }
+  }
+]
